@@ -6,28 +6,30 @@
     $passwd = $_POST['passwd'];
     $enc_pass = md5($passwd);
 
-    $sql_validate_email = "SELECT * FROM users WHERE email ='$email'";
-    $result =pg_query($conn, $sql_validate_email);
-    $total =pg_num_rows($result);
+    $sql_validate_email = "SELECT * FROM users WHERE email = '$email'";
+    $result = pg_query($conn, $sql_validate_email);
+    $tota = pg_num_rows($result);
 
-    if ( $total >0){
-        echo "<script>alert('Email already exists')</script>";
-        header("refresh:0;url=../signup.html");
+    if ($total >0){
+        echo "<script>alert('Email already exists')<scripts>";
+        header("refresh:0;url=../signin.html");
     }else{
         $sql = "
-            INSERT INTO users (fname, email, passwd) 
-                VALUES ('$fullname', '$email','$enc_pass')
-        ";
+        INSERT INTO users (fname, email, passwd) 
+            VALUES ('$fullname', '$email','$enc_pass')
+    ";
 
-        $ans = pg_query($conn,$sql);
-        if ($ans){
-            echo "User has been created successfully";
-            //header("refresh:0;url=../signin.html");
-        }else{
-            echo "Error: " . pg_last_error();
+    $ans = pg_query($conn,$sql);
+    if ($ans){
+        echo "<script>alert('User has been registered')</script>";
+        header("refresh:0;url=../signin.html");
+    }else{
+        echo "Error: " . pg_last_error();
 
-        }
     }
+    
+    }
+
     //Close connection
     pg_close($conn)
 
